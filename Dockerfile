@@ -1,12 +1,15 @@
+# Use public ECR Python base image
 FROM public.ecr.aws/docker/library/python:3.10-slim-buster
 
+# Set working directory
 WORKDIR /src
 
-COPY ./app/requirements.txt requirements.txt
+# Copy requirements and install dependencies
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-RUN pip install -r requirements.txt
+# Copy all app files from repo root
+COPY . .
 
-COPY ./app .
-
-CMD python app.py
-
+# Run the application
+CMD ["python", "app.py"]
